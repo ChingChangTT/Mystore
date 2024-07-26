@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import SkeletonLoader from './Sketleton/SkeletonSignUp';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 
 export default function SignUp() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const {setSignupDetails, checkEmailExists } = useAuth();
   const [alertMessage, setAlertMessage] = useState('');
   const [alertSeverity, setAlertSeverity] = useState('');
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ export default function SignUp() {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Reset errors
@@ -33,37 +33,70 @@ export default function SignUp() {
 
     // Validate email
     const emailRegex = /\S+@\S+\.\S+/;
-    if (!email.trim() || !emailRegex.test(email)) {
+    if (!email.trim()) {
+      setEmailError('Email is required');
+      return;
+    } else if (!emailRegex.test(email)) {
       setEmailError('Please enter a valid email address');
       return;
     }
 
+    // Check if email is already registered
+    try {
+      const emailExists = await checkEmailExists(email);
+      if (emailExists) {
+        setEmailError('Email is already registered');
+        setAlertMessage('Email is already registered');
+        setAlertSeverity('error');
+        return;
+      }
+    } catch (error) {
+      console.error('Error checking email:', error);
+      setAlertMessage('There was an error checking the email');
+      setAlertSeverity('error');
+      // navigate('/User')
+      return;
+    }
+    // if (!checkEmailExists(email)) {
+    //   setEmailError('Email is already registered');
+    //   setAlertMessage('Email is already registered');
+    //   setAlertSeverity('error');
+    //   navigate('/User')
+    //   return;
+    // }
+
     // Validate password
     if (!password.trim()) {
       setPasswordError('Password is required');
+      return;
+    } else if (password.length < 8) {
+      setPasswordError('Password must be at least 8 characters long');
       return;
     }
 
     // If validation passes
     setAlertMessage('Sign up successful!');
     setAlertSeverity('success');
-
+    // setSignupDetails({ email, password });
+    setSignupDetails((prevDetails) => [...prevDetails, { email, password }]);
     // Reset form
     setUsername('');
     setEmail('');
     setPassword('');
 
-    navigate('/User');
+    // Navigate after a short delay to show the success alert
+    setTimeout(() => {
+      navigate('/User');
+    }, 1000); // Adjust delay as needed
   };
 
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const timer = setTimeout(() => {
-      // Simulate a data fetching delay
       setIsLoading(false);
-    }, 2000); // Adjust the delay as needed
+    }, 2000);
 
-    return () => clearTimeout(timer); // Cleanup timer on component unmount
+    return () => clearTimeout(timer);
   }, []);
 
   if (isLoading) {
@@ -90,7 +123,7 @@ export default function SignUp() {
               Sign Up
             </h1>
             <h1 className="text-sm font-semibold mb-6 text-gray-500 text-center">
-              Join to Our Community with all time access and free{' '}
+              Join our Community with all-time access and free{' '}
             </h1>
             <div className="mt-4 flex flex-col lg:flex-row items-center justify-between">
               <div className="w-full lg:w-1/2 mb-2 lg:mb-0">
@@ -137,7 +170,7 @@ export default function SignUp() {
                     id="github"
                     className="w-4"
                   >
-                    <path d="M7.999 0C3.582 0 0 3.596 0 8.032a8.031 8.031 0 0 0 5.472 7.621c.4.075.546-.178.546-.385 0-.192-.007-.698-.01-1.37-2.225.487-2.695-1.078-2.695-1.078-.364-.933-.888-1.18-.888-1.18-.726-.502.056-.492.056-.492.802.057 1.223.828 1.223.828.714 1.238 1.873.88 2.329.673.072-.53.28-.88.508-1.083-1.777-.204-3.644-.898-3.644-3.992 0-.883.315-1.605.83-2.17-.083-.205-.36-1.03.078-2.145 0 0 .67-.216 2.2.828.637-.179 1.32-.269 2.001-.272.68.003 1.364.093 2.001.272 1.53-1.044 2.199-.828 2.199-.828.439 1.115.161 1.94.079 2.145.516.565.83 1.287.83 2.17 0 3.101-1.87 3.785-3.653 3.984.288.25.545.746.545 1.504 0 1.085-.01 1.959-.01 2.226 0 .209.145.463.55.384A8.033 8.033 0 0 0 16 8.032C16 3.596 12.418 0 7.999 0z"></path>
+                    <path d="M7.999 0C3.582 0 0 3.596 0 8.032a8.031 8.031 0 0 0 5.472 7.621c.4.075.546-.178.546-.385 0-.192-.007-.698-.01-1.37-2.233.485-2.702-.555-2.86-1.066-.097-.24-.51-1.066-.88-1.292-.303-.183-.735-.631-.01-.645.683-.012 1.174.648 1.35.927.778 1.315 1.59.936 2.158.716.065-.563.308-.936.56-1.15-1.669-.188-3.419-.834-3.419-3.709 0-.817.292-1.488.77-2.015-.078-.191-.334-1.084.072-2.255 0 0 .657-.209 2.156.81.654-.181 1.363-.272 2.062-.276.699.003 1.411.095 2.077.278 1.518-1.029 2.169-.814 2.169-.814.387 1.17.155 2.044.08 2.235.471.522.759 1.16.759 1.977 0 2.897-1.673 3.533-3.39 3.727.336.295.636.878.636 1.768 0 1.274-.011 2.302-.011 2.612 0 .209.146.463.55.384A8.033 8.033 0 0 0 16 8.032C16 3.596 12.418 0 7.999 0z"></path>
                   </svg>{' '}
                   <Link to="https://github.com/">Sign Up with Github</Link>
                 </button>
@@ -178,9 +211,9 @@ export default function SignUp() {
                   id="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className={`w-full p-2 border ${
-                    emailError ? 'border-red-500' : 'border-gray-300'
-                  } rounded-md`}
+                  className={`mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${
+                    emailError ? 'border-red-500' : ''
+                  }`}
                   required
                 />
                 {emailError && (
