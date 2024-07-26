@@ -1,7 +1,20 @@
 import  Axios  from "axios"
 import { useState,useEffect } from "react"
-import { Link } from "react-router-dom";
-export default function ItemCard({id, imagurl, title, text, txtbtn, loading }) {
+import { useNavigate } from "react-router-dom";
+export default function ItemCard({id, imagurl, title, text, txtbtn, loading,price }) {
+  const navigate = useNavigate();
+  const [isPaid, setIsPaid] = useState(false);
+  const handleNavigation = () => {
+    console.log(`Navigating to: ${isPaid ? '/Paid' : `/detail/${id}`}`);
+    if (txtbtn=='Order now') {
+      // navigate('/Paid');
+      navigate('/paid', { state: { imageUrl: imagurl, title: title, price: price } });
+    } 
+    else 
+    {
+     navigate(`/detail/${id}`);
+    }
+  };
   return (
     <div className="p-8 max-w-lg border border-indigo-300 rounded-2xl hover:shadow-xl hover:shadow-indigo-50 flex flex-col items-center">
       <img
@@ -15,14 +28,15 @@ export default function ItemCard({id, imagurl, title, text, txtbtn, loading }) {
           {loading ? "Loading text..." : text || "Default text"}
         </p>
         <div className="mt-auto">
-        <Link aria-current="page" className="flex items-center" to={`/detail/${id}`}>
+        
           <button
             type="button"
+            onClick={handleNavigation}
             className="inline-flex items-center rounded-md border border-transparent bg-gray-800 px-3 py-2 text-sm font-medium leading-4 text-white shadow-sm hover:bg-gray-900"
           >
-            {loading ? "Loading..." : txtbtn || "Default"}
+            {loading ? "Loading..." : txtbtn || (isPaid ? "Go to Paid" : "Go to Detail")}
           </button>
-          </Link>
+       
         </div>
       </div>
     </div>
@@ -60,6 +74,7 @@ export function Cardresult() {
           title={product.title}
           text={product.description}
           txtbtn="Read more"
+          price={product.price}
         />
       ))}
     </div>

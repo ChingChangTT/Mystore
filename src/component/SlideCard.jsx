@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Glide from "@glidejs/glide";
 import Marquee from "./Marquee";
 import ItemCard from "./ItemCard";
 
 import Skeletonslide from "./Sketleton/SketletonSlide";
-
 export default function SliderIndicatorsInside() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -109,7 +108,8 @@ export default function SliderIndicatorsInside() {
               imagurl={imageUrl || 'https://i.pinimg.com/564x/f7/c0/ef/f7c0ef2078b38902d6f095906d7ca13e.jpg'}
               title={product.title}
               text={product.description}
-              txtbtn={product.name}
+              txtbtn="Order now"
+              price={product.price}
             />
           );
         })}

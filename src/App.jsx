@@ -14,8 +14,10 @@ import MyNavabar from './component/Nav_bar'
 import MyComponent from './component/Tablecom'
 import NotFound from './component/NotFound'
 import UserCard from './component/UserCard'
+import Paidbill from './component/Paidbill'
 
 function App() {
+
   return (
     <>
   <MyNavabar/>
@@ -31,6 +33,7 @@ function App() {
       <Route path='/Dash' element={<MyComponent/>}/>
       <Route path='*' element={<NotFound/>}/>
       <Route path='/User' element={<UserCard/>}/>
+      <Route path='/Paid' element={<Paidbill/>} />
     </Routes>
     <MyFooter/>
     </>
