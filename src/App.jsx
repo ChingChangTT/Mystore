@@ -1,41 +1,32 @@
 
-import { Route, Routes } from 'react-router-dom'
 import './App.css'
-import MyFooter from './component/comFoot'
-import { ShoppingResult } from './component/Shopping'
-import  {Cardresult} from './component/ItemCard'
-
-import Work from './component/Work'
-import  { DetailResult } from './component/Detailcard'
-import SliderIndicatorsInside from './component/SlideCard'
-import LogIn from './component/LogIn'
-import SignUp from './component/SignUp'
-import MyNavabar from './component/Nav_bar'
-import MyComponent from './component/Tablecom'
-import NotFound from './component/NotFound'
-import UserCard from './component/UserCard'
-import Paidbill from './component/Paidbill'
-
-function App() {
-
+import Mynavbar from './component/Mynavbar'
+import Footer from './component/Footer'
+import Home from './component/Home'
+import { Route, Routes } from 'react-router-dom'
+import Men from './component/Men'
+import { DataProvider } from './context/DataContext'
+import Women from './component/Women'
+import About from './component/About'
+import Contact from './component/Contact'
+import Cart from './component/Cart'
+function App({text}) {
   return (
     <>
-  <MyNavabar/>
+      <DataProvider>
+    <Mynavbar/>
     <Routes>
-      <Route path='/' element={<Cardresult/>}/>
-      <Route path='/read' element={<Work/>}/>  
-      <Route path='/detail/:id' element={<DetailResult/>} />
-      <Route path='/shopping/:id' element={<ShoppingResult/>}/>
-      <Route path='/shopping' element={<ShoppingResult/>}/>
-      <Route path='/collection' element={<SliderIndicatorsInside/>}/>
-      <Route path='/logIn' element={<LogIn/>}/>
-      <Route path='/signUp' element={<SignUp/>}/>
-      <Route path='/Dash' element={<MyComponent/>}/>
-      <Route path='*' element={<NotFound/>}/>
-      <Route path='/User' element={<UserCard/>}/>
-      <Route path='/Paid' element={<Paidbill/>} />
+      <Route path='/' element={<Home/>}></Route>
+      <Route path='/Home' element={<Home/>}></Route>
+      <Route path='/Men' element={<Men/>}></Route>
+      <Route path='/women' element={<Women/>}></Route>
+      <Route path='/AboutUs' element={<About/>}></Route>
+      <Route path='/contact' element={<Contact/>}></Route>
+      <Route path='/cart' element={<Cart/>}></Route>
     </Routes>
-    <MyFooter/>
+    
+    <Footer/>
+    </DataProvider>
     </>
     
   )
