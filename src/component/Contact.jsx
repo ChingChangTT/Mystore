@@ -51,7 +51,7 @@ export default function Contact() {
                               ? "bg-blue-500 p-2 rounded text-white"
                               : "hover:text-red-700 p-2 rounded text-black"
                           }`}
-                          to="/MyHome">
+                          to="/Home">
                           Home
                         </Link>
                       </a>
@@ -64,7 +64,6 @@ export default function Contact() {
           </div>
           <div id="colorlib-contact">
       <div className="container">
-        {/* Contact Information */}
         <div className="row">
           <div className="col-sm-12">
             <h3>Contact Information</h3>

@@ -81,40 +81,40 @@ export default function Mynavbar() {
                     </Link></a>
                   <ul className="dropdown">
                     <li>
-                      <a href="product-detail.html">Product Detail</a>
+                      <a >Product Detail</a>
                     </li>
                     <li>
-                      <a href="cart.html">Shopping Cart</a>
+                      <a >Shopping Cart</a>
                     </li>
                     <li>
-                      <a href="checkout.html">Checkout</a>
+                      <a >Checkout</a>
                     </li>
                     <li>
-                      <a href="order-complete.html">Order Complete</a>
+                      <a >Order Complete</a>
                     </li>
                     <li>
-                      <a href="add-to-wishlist.html">Wishlist</a>
+                      <a>Wishlist</a>
                     </li>
                   </ul>
                 </li>
                 <li>
-                  <a href="women.html"><Link
-                      style={isActive("/women")}
+                  <a ><Link
+                      style={isActive("/Women")}
                      
                       to="/women">
                      Women
                     </Link></a>
                 </li>
                 <li>
-                  <a href="about.html"><Link
-                      style={isActive("/AboutUs")}
+                  <a><Link
+                      style={isActive("/aboutUs")}
                      
-                      to="/AboutUs">
+                      to="/aboutUs">
                      About
                     </Link></a>
                 </li>
                 <li>
-                  <a href="contact.html"><Link
+                  <a ><Link
                       style={isActive("/contact")}
                       
                       to="/contact">

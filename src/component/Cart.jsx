@@ -15,7 +15,7 @@ export default function Cart() {
   const [delivery] = useState(4.0);
   const [discount] = useState(0.5);
   const displayedProducts = products.slice(0, 8);
-  const discountAmount = subtotal * discount; 
+  // const discountAmount = subtotal * discount;
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
@@ -117,7 +117,6 @@ export default function Cart() {
                     </div>
                   </div>
 
-                  {/* Product List */}
                   {cart.map((item) => (
                     <div key={item.id} className="product-cart d-flex">
                       {/* Product Image and Name */}
@@ -132,14 +131,14 @@ export default function Cart() {
                         </div>
                       </div>
 
-                      {/* Product Price */}
                       <div className="one-eight text-center">
                         <div className="display-tc">
-                          <span className="price">${item.price.toFixed(2)}</span>
+                          <span className="price">
+                            ${item.price.toFixed(2)}
+                          </span>
                         </div>
                       </div>
 
-                      {/* Product Quantity */}
                       <div className="one-eight text-center">
                         <div className="display-tc">
                           <input
@@ -286,4 +285,4 @@ export default function Cart() {
       )}
     </>
   );
-}  
+}

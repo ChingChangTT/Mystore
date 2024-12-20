@@ -1,4 +1,4 @@
-// import React from 'react'
+
 import { Link, useLocation } from "react-router-dom";
 import coimg1 from '../images/cover-img-1.jpg'
 import  { useContext } from "react";
